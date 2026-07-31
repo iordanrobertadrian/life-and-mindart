@@ -1,0 +1,38 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+.vercel
+*.tsbuildinfo
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env — never commit secrets
+.env
+.env*.local
+!.env.example
+
+# Working documents: the audit, the design proposal, the offer sent to the client, the image
+# brief and the guide she edits content by. They carry personal data and commercial terms,
+# and none of it belongs in a public repository.
+/docs-interne/
+
+# Local editor and tool settings
+/.idea/
+/.vscode/

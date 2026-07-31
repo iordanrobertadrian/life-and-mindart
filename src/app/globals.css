@@ -1,0 +1,299 @@
+@import 'tailwindcss';
+
+/* ==========================================================================================
+   Design tokens — Life and Mind Art
+   ------------------------------------------------------------------------------------------
+   The brand's existing colours (deep purple + gold) are kept exactly as the identity they
+   already are; what changes is how they are used. Instead of large saturated blocks, the
+   purple becomes ink and structure, the gold becomes a thin accent, and the page breathes on
+   warm neutrals. Everything below is a token — no component invents its own colour.
+   ========================================================================================== */
+
+@theme {
+  /* ---- Brand: plum (mov) ---------------------------------------------------------------- */
+  --color-plum-50: #faf6fb;
+  --color-plum-100: #f3eaf5;
+  --color-plum-200: #e6d5ea;
+  --color-plum-300: #d1b4d8;
+  --color-plum-400: #b288bd;
+  --color-plum-500: #92629f;
+  --color-plum-600: #764a83;
+  --color-plum-700: #5e3a6a;
+  --color-plum-800: #472c50;
+  --color-plum-900: #33203a;
+  --color-plum-950: #1e1420;
+
+  /* ---- Brand: gold (auriu) -------------------------------------------------------------- */
+  --color-gold-100: #f7efdb;
+  --color-gold-200: #eee0bd;
+  --color-gold-300: #e2cd98;
+  --color-gold-400: #d3b573;
+  --color-gold-500: #c9a961;
+  --color-gold-600: #ab8a45;
+  --color-gold-700: #866a34;
+
+  /* ---- Warm neutrals -------------------------------------------------------------------- */
+  --color-cream: #fbf8f4;
+  --color-sand: #f3ebe1;
+  --color-blush: #f6e6dc;
+  --color-mist: #e9e3f0;
+  --color-ink: #1e1420;
+  --color-ink-soft: #4a3f50;
+  --color-ink-muted: #6e6474;
+
+  /* ---- Typography ------------------------------------------------------------------------ */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-sans-brand), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Fluid scale — one system from 360px to 1600px, no per-breakpoint font sizes. */
+  --text-display: clamp(2.5rem, 1.55rem + 4.2vw, 3.9rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.025em;
+
+  --text-h1: clamp(2.125rem, 1.35rem + 3.2vw, 3.4rem);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.022em;
+
+  --text-h2: clamp(1.75rem, 1.15rem + 2.2vw, 2.75rem);
+  --text-h2--line-height: 1.12;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.3rem, 1rem + 1.1vw, 1.75rem);
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.01em;
+
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.45vw, 1.3125rem);
+  --text-lead--line-height: 1.65;
+
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  /* ---- Shape & depth --------------------------------------------------------------------- */
+  --radius-card: 1.5rem;
+  --radius-panel: 2rem;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 1px 2px rgb(30 20 32 / 0.04), 0 8px 24px -12px rgb(30 20 32 / 0.12);
+  --shadow-lifted: 0 2px 4px rgb(30 20 32 / 0.05), 0 24px 48px -24px rgb(30 20 32 / 0.22);
+  --shadow-glow: 0 0 0 1px rgb(201 169 97 / 0.25), 0 18px 50px -20px rgb(94 58 106 / 0.45);
+
+  /* ---- Motion ---------------------------------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Layout ---------------------------------------------------------------------------- */
+  --container-content: 46rem;
+  --container-page: 78rem;
+}
+
+/* ==========================================================================================
+   Base
+   ========================================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Romanian reads badly justified on a phone — the old site's biggest legibility problem. */
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-plum-200);
+    color: var(--color-plum-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-plum-600);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Anchor targets clear the sticky header. */
+  :where(section, h2, h3)[id] {
+    scroll-margin-top: 6.5rem;
+  }
+}
+
+/* ==========================================================================================
+   Utilities & components
+   ========================================================================================== */
+
+@utility grain {
+  /* A whisper of paper texture; keeps large flat areas from looking digital. */
+  position: relative;
+}
+
+@layer components {
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  }
+
+  /* --- Scroll reveal ---------------------------------------------------------------------
+     Progressive enhancement, gated in pure CSS.
+
+     `(scripting: enabled)` is how we ask "can JavaScript run?" without a script tag. The
+     earlier approach — an inline script stamping a class on <html> — worked, but it mutated
+     the document before React hydrated and so produced an attribute mismatch on every load.
+     This gate costs nothing, ships no script, and degrades correctly: where the media feature
+     is unsupported or scripting is off, the rule never applies and content is simply visible. */
+  [data-reveal] {
+    opacity: 1;
+  }
+
+  @media (scripting: enabled) {
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(1.25rem);
+      transition:
+        opacity 0.7s var(--ease-out-soft),
+        transform 0.7s var(--ease-out-soft);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    [data-reveal][data-visible='true'] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* --- Long-form copy --------------------------------------------------------------------- */
+  .prose-lma {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink-soft);
+  }
+  .prose-lma > * + * {
+    margin-top: 1.25em;
+  }
+  .prose-lma h2 {
+    font-size: var(--text-h3);
+    line-height: 1.25;
+    color: var(--color-ink);
+    margin-top: 2.5em;
+  }
+  .prose-lma h3 {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--color-ink);
+    margin-top: 2em;
+  }
+  .prose-lma strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .prose-lma em {
+    font-style: italic;
+  }
+  .prose-lma a {
+    color: var(--color-plum-700);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-plum-300);
+  }
+  .prose-lma a:hover {
+    text-decoration-color: var(--color-plum-700);
+  }
+  .prose-lma ul,
+  .prose-lma ol {
+    padding-left: 1.25rem;
+  }
+  .prose-lma ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .prose-lma ul > li {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .prose-lma ul > li + li {
+    margin-top: 0.6em;
+  }
+  .prose-lma ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0.125rem;
+    top: 0.7em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background-color: var(--color-gold-500);
+  }
+  .prose-lma ol {
+    list-style: decimal;
+  }
+  .prose-lma ol > li + li {
+    margin-top: 0.6em;
+  }
+  .prose-lma ol > li::marker {
+    color: var(--color-plum-500);
+    font-variant-numeric: tabular-nums;
+  }
+  .prose-lma blockquote {
+    border-left: 2px solid var(--color-gold-400);
+    padding-left: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--color-plum-800);
+  }
+  .prose-lma table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  .prose-lma th,
+  .prose-lma td {
+    text-align: left;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid var(--color-plum-100);
+  }
+  .prose-lma th {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+}
